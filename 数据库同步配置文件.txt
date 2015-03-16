@@ -1,5 +1,0 @@
-外网IP            连接数据IP              连接数据库user           连接数据库psw            测试状态使用库名
-216.12.201.201      10.66.26.199            paycenter               zjyyN1qjppqbfrJSDklmn   paycenter_test
-120.132.154.98      192.168.0.243           paycenter               V6pdajwAz4pTF9Wm        paycenter_test
-216.12.195.19       localhost               paycenter               V6pdajwAz4pTF9Wm        paycenter_test      
-173.192.176.208     localhost               paycenter               V6pdajwAz4pTF9Wm        paycenter_test
