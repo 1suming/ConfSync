@@ -89,15 +89,15 @@ order_sync_client_t::run()
 		if (events[0].events & WRITEABLE) {
 			if (_f) {
 				json = _f->fetch(g_conf.redis_key);
-
+				
 				if (!json.empty()) {
 					if (!reader.parse(json, value)) {
 						log_error("json: %s parse failed.", json.c_str());
 						continue;
 					}
-
-					log_debug("JSON: %s", json.c_str());
-
+					
+					log_debug("JSON: %s LEN: %d", json.c_str(), json.size());
+			
 					out.begin(__CMD_DATA_SYNC);
 					out.write_int(g_conf.client_id);
 					out.write_string(json);

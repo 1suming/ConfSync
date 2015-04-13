@@ -19,9 +19,9 @@ class CPollerUnit;
 class CPollerObject;
 
 struct CEpollSlot {
-	uint32_t seq;
-	CPollerObject *poller;
-	struct CEpollSlot *freeList;
+	uint32_t 			seq;
+	CPollerObject 		*poller;
+	struct CEpollSlot 	*freeList;
 };
 
 class CPollerObject {

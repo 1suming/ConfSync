@@ -193,14 +193,12 @@ int CPollerUnit::InitializePollerUnit(void) //called by CIncoming::open
 {
 	pollerTable = (struct CEpollSlot *)CALLOC(maxPollers, sizeof (*pollerTable));
 
-	if (!pollerTable)
-	{
+	if (!pollerTable) {
 		log_error("calloc failed, num=%d, %m", maxPollers);
 		return -1;
 	}
 
-	for (int i = 0; i < maxPollers - 1; i++)
-	{
+	for (int i = 0; i < maxPollers - 1; i++) {
 		pollerTable[i].freeList = &pollerTable[i+1];
 	}
 
@@ -209,8 +207,7 @@ int CPollerUnit::InitializePollerUnit(void) //called by CIncoming::open
 
 	ep_events = (struct epoll_event *)CALLOC(maxPollers, sizeof (struct epoll_event));
 
-	if (!ep_events)
-	{
+	if (!ep_events) {
 		log_error("malloc failed, %m");
 		return -1;
 	}
@@ -225,10 +222,9 @@ int CPollerUnit::InitializePollerUnit(void) //called by CIncoming::open
 
 inline int CPollerUnit::VerifyEvents (struct epoll_event *ev)
 {
-	int idx = EPOLL_DATA_SLOT (ev);
+	int idx = EPOLL_DATA_SLOT(ev);
 	
-	if ((idx >= maxPollers) || (EPOLL_DATA_SEQ (ev) != pollerTable[idx].seq))
-	{
+	if ((idx >= maxPollers) || (EPOLL_DATA_SEQ(ev) != pollerTable[idx].seq)) {
 		return -1;
 	}
 
@@ -248,8 +244,7 @@ struct CEpollSlot *CPollerUnit::AllocEpollSlot ()
 {
 	CEpollSlot *p = freeSlotList;
 
-	if (0 == p) 
-	{
+	if (0 == p) {
 		log_warning("no free epoll slot, usedPollers=%d", usedPollers);
 		return NULL;
 	}
@@ -293,31 +288,28 @@ void CPollerUnit::ProcessPollerEvents(void)
 
 		p->newEvents = p->oldEvents;
 
-        if(ep_events[i].events & (EPOLLHUP | EPOLLERR)) {
+        if (ep_events[i].events & (EPOLLHUP | EPOLLERR)) {
             log_debug ("EPOLLHUP | EPOLLERR netfd[%d]", p->netfd);
 			p->HangupNotify();
 			continue;
 		}
 
-		if(ep_events[i].events & EPOLLIN) {
+		if (ep_events[i].events & EPOLLIN) {
             log_debug ("EPOLLIN netfd[%d]", p->netfd);
 			ret_code = p->InputNotify();
 			log_debug ("ret_code [%d]", ret_code);
             //因为在InputNotify里面已经删除了自己，所以这里必须判断是否已经detach
-            if (s->poller != p)
-            {
+            if (s->poller != p) {
                 continue;
             }
 
             //再次检测返回值，如果不等于POLLER_SUCC，则表示已经delete掉自己，或者异常
-            if (ret_code != POLLER_SUCC)
-            {
+            if (ret_code != POLLER_SUCC) {
                 continue;
             }
         }
 
-        if(ep_events[i].events & EPOLLOUT)
-        {
+        if (ep_events[i].events & EPOLLOUT) {
             log_debug ("EPOLLOUT netfd[%d]", p->netfd);
 			ret_code = p->OutputNotify();
 

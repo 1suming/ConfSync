@@ -75,13 +75,12 @@ int CGameUnit::reConnect(void)
 	log_debug("*STEP: PROXY CNet::reConnect ret :[%d], netfd:[%d]", ret, netfd);
 	if (ret < 0)
 	{
-		if (ret == SOCKET_CREATE_FAILED)
-		{
+		if (ret == SOCKET_CREATE_FAILED) {
 			log_error("*STEP: helper create socket failed, errno[%d], msg[%s]", errno, strerror(errno));
 			return -1;
 		}
-		if(errno != EINPROGRESS)
-		{
+
+		if (errno != EINPROGRESS) {
 			log_error("*STEP: PROXY connect to logic failed, errno[%d], msg[%s]",errno , strerror(errno));
 			return -1;
 		}

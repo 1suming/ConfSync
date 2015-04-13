@@ -50,7 +50,7 @@ using namespace std;
 	if (sid == 0) sid = sz;				\
 } while(0)				
 
-#define __MAX__PKG_SIZE 16 * (1 << 10)
+#define __MAX_PKG_SIZE 60 * (1 << 10)
 
 extern CMemPool* _webMp;
 extern Watchdog* LogFile;

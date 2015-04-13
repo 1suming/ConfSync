@@ -42,7 +42,7 @@ public:
 
     	IsConnected = false; 
 
-    	__END__(__FUNCTION__, 0)
+    	__END__(__FUNCTION__, 0);
     	return 0; 
 	}
 

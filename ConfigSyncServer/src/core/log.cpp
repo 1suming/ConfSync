@@ -34,11 +34,11 @@ void init_log (const char *app, const char *dir, int max_num, int max_size)
         log_error("logdir(%s): Not writable", log_dir);
     }
 
-    if(max_num > 0)
-        max_file_num = max_num;
+    if(max_num > 0) max_file_num = max_num;
+
+    log_debug("max_file_num: %d", max_file_num);
     
-    if(max_size > 0)
-        max_file_size = max_size;
+    if(max_size > 0) max_file_size = max_size;
 }
 
 void set_log_level(int l)
@@ -106,16 +106,16 @@ void write_access(int access, const char* rsp_buf, const char* fmt, ...)
 void write_log (int level, const char *filename, const char *funcname, int lineno, const char *format, ...)
 {
     // save errno
-    int savedErrNo = errno;
-    int off = 0;
-    int n_write;
-    char buf[LOGSIZE];
-    char logfile[512];
-    int fd = -1;
+    int         savedErrNo = errno;
+    int         off = 0;
+    int         n_write;
+    char        buf[LOGSIZE];
+    char        logfile[512];
+    int         fd = -1;
     struct stat stBuf;
-    bool btruncate = false;
-    struct tm tm;
-    time_t now = time (NULL);
+    bool        btruncate = false;
+    struct tm   tm;
+    time_t      now = time (NULL);
 
     localtime_r(&now, &tm);
     filename = basename(filename);
@@ -127,10 +127,8 @@ void write_log (int level, const char *filename, const char *funcname, int linen
             getpid(),
             filename, lineno, funcname
             );
-    do
-    {
-        if(!appname[0])
-        {
+    do {
+        if(!appname[0]) {
             fprintf(stderr, "ATTENTION: the prefix of the log file is not set\n");
             return;
         }
@@ -146,32 +144,27 @@ void write_log (int level, const char *filename, const char *funcname, int linen
             flags |= O_TRUNC;
 
         fd = open (logfile, flags, 0644);
-        if (fd < 0)
-        {
+        if (fd < 0) {
             fprintf(stderr, "ATTENTION: open log file failed, dir[%s] file[%s], error[%m]\n", log_dir, appname);
             return;
         }
 
-        if(-1 == fstat(fd, &stBuf))
-        {
+        if(-1 == fstat(fd, &stBuf)) {
             fprintf(stderr, "ATTENTION: stat log file failed, dir[%s] file[%s], error[%m]\n", log_dir, appname);
             return;
         }
 
-        if((int)stBuf.st_size >= max_file_size)
-        {
-            cur_file_pos = (cur_file_pos + 1)%max_file_num;
+        if((int)stBuf.st_size >= max_file_size) {
+            cur_file_pos = (cur_file_pos + 1) % max_file_num;
             close(fd);
             fd = -1;
             btruncate = true;
             continue;
-        }
-        else
-        {
+        } else {
             break;
         }
 
-    }while(true);
+    } while(true);
 
     va_list ap;
     va_start(ap, format);

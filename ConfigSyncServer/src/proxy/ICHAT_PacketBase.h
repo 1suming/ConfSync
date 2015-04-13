@@ -14,7 +14,7 @@
 #endif
 
 #ifndef ICHAT_TCP_MAX_BUFFER	//TCP socket 最大接收 Buffer Size
-#	define	ICHAT_TCP_MAX_BUFFER	1024 * 16
+#	define	ICHAT_TCP_MAX_BUFFER	1024 * 60
 #endif
 
 #ifndef ICHAT_UDP_DEFAULT_BUFFER	//TCP socket 缺省接收 Buffer Size

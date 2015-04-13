@@ -11,7 +11,7 @@
 using std::string;
 
 #ifndef __MAX_PACKET_SIZE__
-#define __MAX_PACKET_SIZE__ 16 * (1 << 10)
+#define __MAX_PACKET_SIZE__ 60 * (1 << 10)
 #endif
 
 #pragma pack(push, 1)
